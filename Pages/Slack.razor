@@ -1,0 +1,27 @@
+@page "/slack"
+@inject HttpClient Http
+<h1 class="text-center text-primary">Slack</h1>
+<hr>
+
+<div class="d-flex justify-content-center">
+    <button class="btn btn-primary btn-lg" @onclick="ForcePost">Force post to slack!</button>
+</div>
+
+<ConfirmDialog @ref="Confirm" Text="Are you sure you want to post to slack?"/>
+<MessageBox @ref="MessageBox"/>
+
+@code {
+    ConfirmDialog Confirm;
+    MessageBox MessageBox;
+
+    private async Task ForcePost(){
+        Confirm.Prompt();
+        while(Confirm.Show == true)
+            await Task.Delay(500);
+        
+        if(Confirm.Value)
+            await Http.PostJsonAsync("https://lunchagent.azurewebsites.net/api/slack/forcepost", "");
+
+        await MessageBox.ShowMessage("Posted successfully");
+    }
+}

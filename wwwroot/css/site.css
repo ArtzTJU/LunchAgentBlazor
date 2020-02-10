@@ -162,7 +162,9 @@ app {
 
 .btn-primary:hover {
     background-color: #1a0320;
+    border: 0px;
 }
+
 
 .full {
     width: 100%;
@@ -178,4 +180,24 @@ app {
     font-size: 3rem !important;
     line-height: 0 !important;
     border-radius: 15rem !important;
+}
+
+.modal {
+    background-color:rgba(0, 0, 0, 0.7);
+}
+
+.message-box {
+    top: 0;
+    right: 0;
+    position: fixed;
+    margin: 1.5rem 3rem;
+}
+
+.alert {
+    opacity: 0;
+    transition: opacity 1000ms linear;
+}
+
+.alert.show {
+    opacity: 1;
 }
