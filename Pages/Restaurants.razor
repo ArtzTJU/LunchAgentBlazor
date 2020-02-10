@@ -1,0 +1,65 @@
+@page "/restaurants"
+@inject HttpClient Http
+<h1 class="text-center text-primary">Restaurant Setting</h1>
+<hr>
+
+@if(RestaurantList == null){
+    <div class="full d-flex align-items-center justify-content-center">
+        <div class="d-flex flex-column align-items-center">
+            <div class="spinner-border text-primary"></div>
+            <div>Loading data ...</div>
+        </div>
+    </div>
+}
+else {
+    <table class="table">
+        <tr>
+            <th>Název</th>
+            <th>Url</th>
+            <th>Emoji</th>
+            <th>Id</th>
+            <th></th>
+        </tr>
+        @foreach (var restaurant in RestaurantList)
+        {
+            <tr>
+                <td><input type="text" class="form-control" @bind="restaurant.Name" disabled="true" /> </td>
+                <td><input type="text" class="form-control" @bind="restaurant.Url" disabled="true" /> </td>
+                <td><input type="text" class="form-control" @bind="restaurant.Emoji" disabled="true" /> </td>
+                <td><input type="text" class="form-control" @bind="restaurant.Id" disabled="true" />  </td>
+                <td>
+                    <button class="btn btn-primary">Edit</button>
+                    <button class="btn btn-danger">Delete</button>
+                </td>
+            </tr>
+        }
+    </table>
+
+    <div class="hover">
+        <button class="btn btn-primary btn-lg btn-refresh" @onclick="Refresh">
+            <span class="oi oi-loop-circular"></span>
+        </button>
+    </div>
+}
+
+
+
+
+@code {
+    Restaurant[] RestaurantList { get; set; }
+
+    protected override async Task OnInitializedAsync(){
+        await Refresh();
+    }
+
+    protected async Task Refresh(){
+        RestaurantList = await Http.GetJsonAsync<Restaurant[]>("https://lunchagent.azurewebsites.net/api/restaurant/setting"); 
+    }
+
+    class Restaurant {
+        public string Name { get; set; }
+        public string Url { get; set; }
+        public string Emoji { get; set; }
+        public string Id { get; set; }
+    }
+}

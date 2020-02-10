@@ -1,0 +1,75 @@
+@inject HttpClient Http
+
+@if(Menus == null){
+    <div class="full d-flex align-items-center justify-content-center">
+        <div class="d-flex flex-column align-items-center">
+            <div class="spinner-border text-primary"></div>
+            <div>Loading data ...</div>
+        </div>
+    </div>
+}
+else {
+    <div class="row">
+    @foreach(var menu in Menus){
+        @if(menu.Items != null || menu.Items.Count() != 0)
+        {
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        @menu.Restaurant.Name
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless ">
+                            <tr>
+                                <th>Název</th>
+                                <th>Cena</th>
+                            </tr>
+                        @foreach (var item in menu.Items)
+                        {
+                            <tr>
+                                <td>@item.Description</td>
+                                <td>@item.Price</td>
+                            </tr>
+                        }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    </div>
+    <div class="hover">
+        <button class="btn btn-primary btn-lg btn-refresh" @onclick="Refresh">
+            <span class="oi oi-loop-circular"></span>
+        </button>
+    </div>
+}
+
+
+
+
+@code {
+    Menu[] Menus {get;set;}
+
+    protected override async Task OnInitializedAsync(){
+        await Refresh();
+    }
+
+    protected async Task Refresh(){
+        Menus = await Http.GetJsonAsync<Menu[]>("https://lunchagent.azurewebsites.net/api/restaurant/menus"); 
+    }
+
+    class Menu {
+        public Restaurant Restaurant { get; set; }
+        public Item[] Items { get; set; }
+    }
+
+    class Restaurant {
+        public string Name { get; set; }
+    }
+
+    class Item {
+        public string Description { get; set; }
+        public string Price { get; set; }
+    }
+}
