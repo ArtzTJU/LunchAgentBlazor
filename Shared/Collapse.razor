@@ -1,0 +1,22 @@
+
+<div class="b-collapse">
+    <button class="btn btn-primary btn-lg" @onclick="Trigger">@Title</button>
+    <div class="collapse @(Collapsed ? "" : "show")">
+        <div class="b-collapse-content d-flex align-items-center justify-content-center">
+            @ChildContent
+        </div>
+    </div> 
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public bool Collapsed = true;
+
+    public void Trigger(){
+        Collapsed = !Collapsed;
+    }
+}

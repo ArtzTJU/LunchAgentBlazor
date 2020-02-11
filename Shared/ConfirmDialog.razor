@@ -20,13 +20,12 @@
 }
 
 @code {
-    [Parameter]
-    public string Text { get; set; }
-
+    private string Text;
     public bool Show;
     public bool Value;
 
-    public void Prompt(){
+    public void Prompt(string text){
+        Text = text;
         Show = true;
         StateHasChanged();
     }

@@ -165,6 +165,10 @@ app {
     border: 0px;
 }
 
+.btn-primary:focus {
+    box-shadow: none;
+}
+
 
 .full {
     width: 100%;
@@ -200,4 +204,17 @@ app {
 
 .alert.show {
     opacity: 1;
+}
+
+.b-collapse {
+    margin: 1rem;
+    border: 1px solid rgba(5,39,103,0.625);
+    border-radius: 0.3rem;
+}
+
+.b-collapse-content .form-group {
+    margin: 0.5rem 0rem;
+}
+.b-collapse-content button {
+    margin: 0.5rem 0rem;
 }

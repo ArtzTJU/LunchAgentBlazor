@@ -42,10 +42,10 @@ else {
     </div>
 }
 
-
-
+<MessageBox @ref="MessageBox"/>
 
 @code {
+    MessageBox MessageBox;
     Restaurant[] RestaurantList { get; set; }
 
     protected override async Task OnInitializedAsync(){
@@ -54,6 +54,7 @@ else {
 
     protected async Task Refresh(){
         RestaurantList = await Http.GetJsonAsync<Restaurant[]>("https://lunchagent.azurewebsites.net/api/restaurant/setting"); 
+        await MessageBox.ShowMessage("Restaurants loaded!");
     }
 
     class Restaurant {
