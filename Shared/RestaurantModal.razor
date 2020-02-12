@@ -1,0 +1,40 @@
+@inject HttpClient Http
+
+<Modal @ref="Modal" ButtonText="Save">
+    <form>
+        <div class="form-group">
+            <label>Name:</label>
+            <input type="text" class="form-control" placeholder="Enter Name" @bind="Restaurant.Name"/>
+        </div>
+        <div class="form-group">
+            <label>Url:</label>
+            <input type="text" class="form-control" placeholder="Enter Url" @bind="Restaurant.Url"/>
+        </div>
+        <div class="form-group">
+            <label>Emoji:</label>
+            <input type="text" class="form-control" placeholder="Enter emoji" @bind="Restaurant.Emoji"/>
+        </div>
+        <div class="form-group">
+            <label>Id:</label>
+            <input type="text" class="form-control" placeholder="Will be generated" @bind="Restaurant.Id" disabled="true"/>
+        </div>
+    </form> 
+</Modal>
+
+@code {
+    public Models.Restaurant Restaurant { get; set; }
+
+    [Parameter]
+    public MessageBox MessageBox { get; set; }
+    Modal Modal;
+
+    public async Task Prompt(Models.Restaurant restaurant){
+        Restaurant = restaurant;
+        await Modal.Prompt("Edit Restaurant");
+        if(Modal.Value == true){
+            await Http.PostJsonAsync("https://lunchagent.azurewebsites.net/api/restaurant/restaurant", Restaurant);
+            MessageBox.ShowMessage($"Restaurant '{restaurant.Name}' Edited!");
+        }
+    }
+
+}

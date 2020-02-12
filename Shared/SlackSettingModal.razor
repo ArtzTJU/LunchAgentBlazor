@@ -1,0 +1,40 @@
+@inject HttpClient Http
+
+<Modal @ref="Modal" ButtonText="Save">
+    <form>
+        <div class="form-group">
+            <label>Bot Token:</label>
+            <input type="text" class="form-control" placeholder="Enter bot token" @bind="SlackSetting.BotToken"/>
+        </div>
+        <div class="form-group">
+            <label>Channel Name:</label>
+            <input type="text" class="form-control" placeholder="Enter channel name" @bind="SlackSetting.ChannelName"/>
+        </div>
+        <div class="form-group">
+            <label>Bot Id:</label>
+            <input type="text" class="form-control" placeholder="Enter bot id" @bind="SlackSetting.BotId"/>
+        </div>
+        <div class="form-group">
+            <label>Id:</label>
+            <input type="text" class="form-control" placeholder="Enter id, or leave empty" @bind="SlackSetting.Id"/>
+        </div>
+    </form> 
+</Modal>
+
+@code {
+    public Models.SlackSetting SlackSetting { get; set; }
+
+    [Parameter]
+    public MessageBox MessageBox { get; set; }
+    Modal Modal;
+
+    public async Task Prompt(Models.SlackSetting slackSetting){
+        SlackSetting = slackSetting;
+        await Modal.Prompt("Edit Slack Setting");
+        if(Modal.Value == true){
+            await Http.PostJsonAsync("https://lunchagent.azurewebsites.net/api/slack/setting", slackSetting);
+            MessageBox.ShowMessage($"Slack setting edited!");
+        }
+    }
+
+}

@@ -1,5 +1,6 @@
 @page "/restaurants"
 @inject HttpClient Http
+
 <h1 class="text-center text-primary">Restaurant Setting</h1>
 <hr>
 
@@ -28,12 +29,15 @@ else {
                 <td><input type="text" class="form-control" @bind="restaurant.Emoji" disabled="true" /> </td>
                 <td><input type="text" class="form-control" @bind="restaurant.Id" disabled="true" />  </td>
                 <td>
-                    <button class="btn btn-primary">Edit</button>
-                    <button class="btn btn-danger">Delete</button>
+                    <button class="btn btn-primary" @onclick="() => Edit(restaurant)">Edit</button>
+                    <button class="btn btn-danger" @onclick="() => Delete(restaurant)">Delete</button>
                 </td>
             </tr>
         }
     </table>
+    <div class="text-center">
+        <button class="btn btn-primary" @onclick="Add">Add New</button>
+    </div>
 
     <div class="hover">
         <button class="btn btn-primary btn-lg btn-refresh" @onclick="Refresh">
@@ -42,25 +46,43 @@ else {
     </div>
 }
 
+
+<Modal @ref="ConfirmModal"></Modal>
 <MessageBox @ref="MessageBox"/>
+<RestaurantModal @ref="EditModal" MessageBox="MessageBox"></RestaurantModal>
 
 @code {
     MessageBox MessageBox;
-    Restaurant[] RestaurantList { get; set; }
+    RestaurantModal EditModal;
+    Modal ConfirmModal;
+    Models.Restaurant[] RestaurantList { get; set; }
 
     protected override async Task OnInitializedAsync(){
         await Refresh();
     }
 
     protected async Task Refresh(){
-        RestaurantList = await Http.GetJsonAsync<Restaurant[]>("https://lunchagent.azurewebsites.net/api/restaurant/setting"); 
-        await MessageBox.ShowMessage("Restaurants loaded!");
+        RestaurantList = await Http.GetJsonAsync<Models.Restaurant[]>("https://lunchagent.azurewebsites.net/api/restaurant/setting"); 
+        StateHasChanged();
+        MessageBox.ShowMessage("Restaurants loaded!");
     }
 
-    class Restaurant {
-        public string Name { get; set; }
-        public string Url { get; set; }
-        public string Emoji { get; set; }
-        public string Id { get; set; }
+    protected async Task Edit(Models.Restaurant restaurant){
+        await EditModal.Prompt(restaurant);
+    }
+
+    protected async Task Delete(Models.Restaurant restaurant){
+        await ConfirmModal.Prompt($"Are you sure you want to delete '{restaurant.Name}'");
+
+        if(ConfirmModal.Value){
+            await Http.DeleteAsync("https://lunchagent.azurewebsites.net/api/restaurant/restaurant/" + restaurant.Id);
+            await Refresh();
+            MessageBox.ShowMessage($"Restaurant '{restaurant.Name}' Deleted!");
+        }
+    }
+
+    protected async Task Add(){
+        await EditModal.Prompt(new Models.Restaurant());
+        await Refresh();
     }
 }

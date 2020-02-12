@@ -1,0 +1,63 @@
+@if(Show){
+    <div class="modal fade show d-block">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">@Title</h4>
+                </div>
+                @if(ChildContent != null){
+                    <div class="modal-body">
+                        @ChildContent
+                    </div>
+                }
+                <div class="modal-footer">
+                    <button type="button" class="btn" @onclick="() => Confirm(false)">Cancel</button>
+                    <button type="button" class="btn btn-primary" @onclick="() => Confirm(true)">@ButtonText</button>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string ButtonText { get; set; } = "Confirm";
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    
+
+    public bool Show;
+    public bool Value;
+
+    public async Task Prompt(){
+        Show = true;
+        StateHasChanged();
+
+        await WaitForAction();
+    }
+
+    public async Task Prompt(string text){
+        Title = text;
+        Show = true;
+        StateHasChanged();
+
+        await WaitForAction();
+    }
+
+    private async Task WaitForAction(){
+        while(Show == true)
+            await Task.Delay(500);
+    }
+
+    public void Confirm(bool value){
+        Value = value;
+        Show = false;
+    }
+
+}

@@ -59,7 +59,7 @@ else {
 
     protected async Task Refresh(){
         Menus = await Http.GetJsonAsync<Menu[]>("https://lunchagent.azurewebsites.net/api/restaurant/menus"); 
-        await MessageBox.ShowMessage("Menus loaded!");
+        MessageBox.ShowMessage("Menus loaded!");
     }
 
     class Menu {

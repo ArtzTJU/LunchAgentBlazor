@@ -199,7 +199,7 @@ app {
 
 .alert {
     opacity: 0;
-    transition: opacity 1000ms linear;
+    transition: opacity 300ms linear;
 }
 
 .alert.show {

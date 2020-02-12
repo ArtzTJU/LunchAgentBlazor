@@ -2,7 +2,7 @@
     @foreach (var message in Messages)
     {
         <div class="alert alert-info @(message.Show ? "show" : "")">
-            <strong>@message.Text</strong>
+            <strong @key="message">@message.Text</strong>
         </div>
     }
 </div>
@@ -19,7 +19,7 @@
         };
         Messages.Add(message);
         StateHasChanged();
-        await Task.Delay(1000);
+        await Task.Delay(300);
 
         message.Show = true;
         StateHasChanged();
@@ -27,7 +27,7 @@
 
         message.Show = false;
         StateHasChanged();
-        await Task.Delay(1000);
+        await Task.Delay(300);
 
         Messages.Remove(message);
         StateHasChanged();
