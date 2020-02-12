@@ -13,23 +13,25 @@
     </div>
 }
 else {
-    <table class="table">
+    <table class="table table-responsive">
         <tr>
             <th>Název</th>
-            <th>Url</th>
-            <th>Emoji</th>
-            <th>Id</th>
+            <th class="d-none d-sm-block">Url</th>
+            <th class="d-none d-sm-block">Emoji</th>
+            <th class="d-none d-sm-block">Id</th>
+            <th></th>
             <th></th>
         </tr>
         @foreach (var restaurant in RestaurantList)
         {
             <tr>
                 <td><input type="text" class="form-control" @bind="restaurant.Name" disabled="true" /> </td>
-                <td><input type="text" class="form-control" @bind="restaurant.Url" disabled="true" /> </td>
-                <td><input type="text" class="form-control" @bind="restaurant.Emoji" disabled="true" /> </td>
-                <td><input type="text" class="form-control" @bind="restaurant.Id" disabled="true" />  </td>
+                <td><input type="text" class="form-control d-none d-sm-block" @bind="restaurant.Url" disabled="true" /> </td>
+                <td><input type="text" class="form-control d-none d-sm-block" @bind="restaurant.Emoji" disabled="true" /> </td>
                 <td>
                     <button class="btn btn-primary" @onclick="() => Edit(restaurant)">Edit</button>
+                </td>
+                <td>
                     <button class="btn btn-danger" @onclick="() => Delete(restaurant)">Delete</button>
                 </td>
             </tr>
