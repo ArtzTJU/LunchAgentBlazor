@@ -25,9 +25,9 @@ else {
         @foreach (var restaurant in RestaurantList)
         {
             <tr>
-                <td><input type="text" class="form-control" @bind="restaurant.Name" disabled="true" /> </td>
-                <td><input type="text" class="form-control d-none d-sm-block" @bind="restaurant.Url" disabled="true" /> </td>
-                <td><input type="text" class="form-control d-none d-sm-block" @bind="restaurant.Emoji" disabled="true" /> </td>
+                <td class="d-none d-sm-block"><input type="text" class="form-control" @bind="restaurant.Name" disabled="true" /> </td>
+                <td class="d-none d-sm-block"><input type="text" class="form-control" @bind="restaurant.Url" disabled="true" /> </td>
+                <td class="d-none d-sm-block"><input type="text" class="form-control" @bind="restaurant.Emoji" disabled="true" /> </td>
                 <td>
                     <button class="btn btn-primary" @onclick="() => Edit(restaurant)">Edit</button>
                 </td>
