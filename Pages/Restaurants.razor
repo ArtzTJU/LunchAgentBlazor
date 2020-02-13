@@ -1,52 +1,52 @@
 @page "/restaurants"
 @inject HttpClient Http
 
-<h1 class="text-center text-primary">Restaurant Setting</h1>
-<hr>
-
-@if(RestaurantList == null){
-    <div class="full d-flex align-items-center justify-content-center">
-        <div class="d-flex flex-column align-items-center">
-            <div class="spinner-border text-primary"></div>
-            <div>Loading data ...</div>
+<div>
+    <h1 class="text-center text-primary">Restaurant Setting</h1>
+    <hr>
+    @if(RestaurantList == null){
+        <div class="full d-flex align-items-center justify-content-center">
+            <div class="d-flex flex-column align-items-center">
+                <div class="spinner-border text-primary"></div>
+                <div>Loading data ...</div>
+            </div>
         </div>
-    </div>
-}
-else {
-    <table class="table table-responsive">
-        <tr>
-            <th>Název</th>
-            <th class="d-none d-sm-table-cell">Url</th>
-            <th class="d-none d-sm-table-cell">Emoji</th>
-            <th></th>
-            <th></th>
-        </tr>
-        @foreach (var restaurant in RestaurantList)
-        {
+    }
+    else {
+        <table class="table table-responsive-sm">
             <tr>
-                <td><input type="text" class="form-control" @bind="restaurant.Name" disabled="true" /> </td>
-                <td class="d-none d-sm-table-cell"><input type="text" class="form-control" @bind="restaurant.Url" disabled="true" /> </td>
-                <td class="d-none d-sm-table-cell"><input type="text" class="form-control" @bind="restaurant.Emoji" disabled="true" /> </td>
-                <td>
-                    <button class="btn btn-primary" @onclick="() => Edit(restaurant)">Edit</button>
-                </td>
-                <td>
-                    <button class="btn btn-danger" @onclick="() => Delete(restaurant)">Delete</button>
-                </td>
+                <th>Název</th>
+                <th class="d-none d-sm-table-cell">Url</th>
+                <th class="d-none d-sm-table-cell">Emoji</th>
+                <th></th>
+                <th></th>
             </tr>
-        }
-    </table>
-    <div class="text-center">
-        <button class="btn btn-primary" @onclick="Add">Add New</button>
-    </div>
+            @foreach (var restaurant in RestaurantList)
+            {
+                <tr>
+                    <td><input type="text" class="form-control" @bind="restaurant.Name" disabled="true" /> </td>
+                    <td class="d-none d-sm-table-cell"><input type="text" class="form-control" @bind="restaurant.Url" disabled="true" /> </td>
+                    <td class="d-none d-sm-table-cell"><input type="text" class="form-control" @bind="restaurant.Emoji" disabled="true" /> </td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => Edit(restaurant)">Edit</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" @onclick="() => Delete(restaurant)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </table>
+        <div class="text-center">
+            <button class="btn btn-primary" @onclick="Add">Add New</button>
+        </div>
 
-    <div class="hover">
-        <button class="btn btn-primary btn-refresh" @onclick="Refresh">
-            <span class="oi oi-loop-circular"></span>
-        </button>
-    </div>
-}
-
+        <div class="hover">
+            <button class="btn btn-primary btn-refresh" @onclick="Refresh">
+                <span class="oi oi-loop-circular"></span>
+            </button>
+        </div>
+    }
+</div>
 
 <Modal @ref="ConfirmModal"></Modal>
 <MessageBox @ref="MessageBox"/>
